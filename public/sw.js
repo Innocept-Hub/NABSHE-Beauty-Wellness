@@ -1,7 +1,7 @@
 // NABSHÉ Beauty & Wellness - Service Worker
 // Network-First with Cache Fallback for immediate deployment updates without stale cache locking
 
-const CACHE_NAME = 'nabshe-cache-v1';
+const CACHE_NAME = 'nabshe-cache-v2';
 
 // Assets to precache during service worker installation
 const PRECACHE_ASSETS = [
