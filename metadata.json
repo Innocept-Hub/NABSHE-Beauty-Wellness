@@ -1,0 +1,6 @@
+{
+  "name": "NABSHÉ Beauty & Wellness",
+  "description": "Dubai premier salon, wellness treatments, and boutique beauty store.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
