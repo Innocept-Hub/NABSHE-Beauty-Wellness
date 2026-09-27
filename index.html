@@ -2,7 +2,7 @@
 <html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#131315" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -17,10 +17,49 @@
     <meta property="og:description" content="Dubai premier salon, wellness treatments, and retail beauty products." />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Kufi+Arabic:wght@100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+
+    <!-- LCP Image Preload: Discovered at millisecond 0 with High Fetch Priority -->
+    <link
+      rel="preload"
+      as="image"
+      href="https://lh3.googleusercontent.com/aida-public/AB6AXuB6j7WR1aZZhmNtH4rY9JJb--A5GY7hfoop8fWHZo_YYkIFCwJbyxCPuiO18acyS2sjjeO2E_hkYh1129rvcleHzRElHDS8642K0I1uninuLS53kTam1umlLLmT8adw9Ga8jeNWJz28RZ2voO7At0aY7nkrKVnBIOZtzQ5xAkJZd860wZ0ip6ikEPThOiBXR_seHpk3w428cwDLv684_CoSN_NLvkRc-o0ZX5teIgS3e1BR2T9p95kz"
+      fetchpriority="high"
+    />
+
+    <!-- Preconnect to Google Fonts domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Non-Render-Blocking Asynchronous Font Loading (Swap enabled, subsetted Material Symbols) -->
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Noto+Kufi+Arabic:wght@400;600;700&family=Playfair+Display:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Noto+Kufi+Arabic:wght@400;600;700&family=Playfair+Display:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+
+    <!-- Subsetted Material Symbols: 320 KB instead of 4.0 MB, display=swap -->
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Noto+Kufi+Arabic:wght@400;600;700&family=Playfair+Display:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" />
+    </noscript>
+
     <style>
       :root {
         color-scheme: dark;
@@ -41,11 +80,22 @@
       [lang="ar"] * {
         font-family: 'Noto Kufi Arabic', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
       }
+      /* Reserved dimensions to prevent font swap layout shifts (CLS = 0) */
       .material-symbols-outlined,
       [dir="rtl"] .material-symbols-outlined,
       [lang="ar"] .material-symbols-outlined {
         font-family: 'Material Symbols Outlined' !important;
         font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        line-height: 1;
+        overflow: hidden;
+        vertical-align: middle;
+        text-align: center;
+        user-select: none;
+        font-feature-settings: 'liga';
+        -webkit-font-smoothing: antialiased;
       }
       /* Hide standard scrollbars for a native mobile look */
       ::-webkit-scrollbar {

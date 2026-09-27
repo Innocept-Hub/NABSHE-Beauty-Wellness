@@ -123,11 +123,14 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
       {/* Hero Section */}
       <section className="py-2 -mx-4 sm:-mx-6 lg:mx-0 animate-fade-in-up">
         <div className="relative w-full rounded-none lg:rounded-2xl overflow-hidden shadow-2xl bg-[#1b1a1c] px-4 sm:px-6 lg:p-12 py-6 sm:py-8 lg:py-12 min-h-[300px] sm:min-h-[350px] md:min-h-[380px] lg:min-h-[440px] border-y lg:border border-[#353437]/50 flex flex-col justify-end">
-          <div
-            className="absolute inset-0 bg-cover bg-center opacity-85 contrast-125 saturate-135 brightness-100 scale-105 transition-transform duration-1000"
-            style={{
-              backgroundImage: `url('https://lh3.googleusercontent.com/aida-public/AB6AXuB6j7WR1aZZhmNtH4rY9JJb--A5GY7hfoop8fWHZo_YYkIFCwJbyxCPuiO18acyS2sjjeO2E_hkYh1129rvcleHzRElHDS8642K0I1uninuLS53kTam1umlLLmT8adw9Ga8jeNWJz28RZ2voO7At0aY7nkrKVnBIOZtzQ5xAkJZd860wZ0ip6ikEPThOiBXR_seHpk3w428cwDLv684_CoSN_NLvkRc-o0ZX5teIgS3e1BR2T9p95kz')`,
-            }}
+          <img
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6j7WR1aZZhmNtH4rY9JJb--A5GY7hfoop8fWHZo_YYkIFCwJbyxCPuiO18acyS2sjjeO2E_hkYh1129rvcleHzRElHDS8642K0I1uninuLS53kTam1umlLLmT8adw9Ga8jeNWJz28RZ2voO7At0aY7nkrKVnBIOZtzQ5xAkJZd860wZ0ip6ikEPThOiBXR_seHpk3w428cwDLv684_CoSN_NLvkRc-o0ZX5teIgS3e1BR2T9p95kz"
+            alt={isRtl ? 'فن الجمال والعناية بالبشرة' : 'The Art of Beauty & Restorative Care'}
+            fetchPriority="high"
+            decoding="async"
+            width={824}
+            height={600}
+            className="absolute inset-0 w-full h-full object-cover object-center opacity-85 contrast-125 saturate-135 brightness-100 scale-105 transition-transform duration-1000 pointer-events-none"
           />
           {/* Subtle directional gradients for rich color and clear typography */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#131315] via-[#131315]/65 to-transparent pointer-events-none"></div>
@@ -259,7 +262,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
                 {chunk.map(treatment => {
                   const isSaved = savedTreatmentIds.includes(treatment.id);
                   return (
-                    <article
+                    <div
                       key={treatment.id}
                       role="button"
                       tabIndex={0}
@@ -338,7 +341,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
                           <span className="whitespace-nowrap">{isRtl ? 'احجز الموعد' : 'Book Treatment'}</span>
                         </button>
                       </div>
-                    </article>
+                    </div>
                   );
                 })}
               </div>
@@ -493,7 +496,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
                 {chunk.map(product => {
                   const isSaved = savedProductIds.includes(product.id);
                   return (
-                    <article
+                    <div
                       key={product.id}
                       role="button"
                       tabIndex={0}
@@ -577,7 +580,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
                           <span className="whitespace-nowrap">{isRtl ? 'إضافة للحقيبة' : 'Add to Bag'}</span>
                         </button>
                       </div>
-                    </article>
+                    </div>
                   );
                 })}
               </div>

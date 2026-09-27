@@ -21,25 +21,63 @@ import {
 import { Header } from './components/Header';
 import { BottomNav } from './components/BottomNav';
 import { HomeScreen } from './components/HomeScreen';
-import { ServicesScreen } from './components/ServicesScreen';
-import { CuratedPackagesScreen } from './components/CuratedPackagesScreen';
-import { TreatmentDetailScreen } from './components/TreatmentDetailScreen';
-import { BookingFlowScreen } from './components/BookingFlowScreen';
-import { RequestReceivedScreen } from './components/RequestReceivedScreen';
-import { ShopScreen } from './components/ShopScreen';
-import { CartModal } from './components/CartModal';
-import { OrderConfirmationScreen } from './components/OrderConfirmationScreen';
-import { RequestsScreen } from './components/RequestsScreen';
-import { ProfileScreen } from './components/ProfileScreen';
-import { SearchScreen } from './components/SearchScreen';
-import { VipMembershipScreen } from './components/VipMembershipScreen';
-import { SanctuaryStoryScreen } from './components/SanctuaryStoryScreen';
-import { ArtisansScreen } from './components/ArtisansScreen';
-import { DiagnosticScreen } from './components/DiagnosticScreen';
-import { SavedScreen } from './components/SavedScreen';
-import { ProductDetailScreen } from './components/ProductDetailScreen';
-import { PWAInstallModal } from './components/PWAInstallModal';
 import { useScrollReveal } from './utils/useScrollReveal';
+
+// Code-split secondary screens to remove 150KB+ of unused JavaScript from initial bundle
+const ServicesScreen = React.lazy(() =>
+  import('./components/ServicesScreen').then(m => ({ default: m.ServicesScreen }))
+);
+const CuratedPackagesScreen = React.lazy(() =>
+  import('./components/CuratedPackagesScreen').then(m => ({ default: m.CuratedPackagesScreen }))
+);
+const TreatmentDetailScreen = React.lazy(() =>
+  import('./components/TreatmentDetailScreen').then(m => ({ default: m.TreatmentDetailScreen }))
+);
+const BookingFlowScreen = React.lazy(() =>
+  import('./components/BookingFlowScreen').then(m => ({ default: m.BookingFlowScreen }))
+);
+const RequestReceivedScreen = React.lazy(() =>
+  import('./components/RequestReceivedScreen').then(m => ({ default: m.RequestReceivedScreen }))
+);
+const ShopScreen = React.lazy(() =>
+  import('./components/ShopScreen').then(m => ({ default: m.ShopScreen }))
+);
+const CartModal = React.lazy(() =>
+  import('./components/CartModal').then(m => ({ default: m.CartModal }))
+);
+const OrderConfirmationScreen = React.lazy(() =>
+  import('./components/OrderConfirmationScreen').then(m => ({ default: m.OrderConfirmationScreen }))
+);
+const RequestsScreen = React.lazy(() =>
+  import('./components/RequestsScreen').then(m => ({ default: m.RequestsScreen }))
+);
+const ProfileScreen = React.lazy(() =>
+  import('./components/ProfileScreen').then(m => ({ default: m.ProfileScreen }))
+);
+const SearchScreen = React.lazy(() =>
+  import('./components/SearchScreen').then(m => ({ default: m.SearchScreen }))
+);
+const VipMembershipScreen = React.lazy(() =>
+  import('./components/VipMembershipScreen').then(m => ({ default: m.VipMembershipScreen }))
+);
+const SanctuaryStoryScreen = React.lazy(() =>
+  import('./components/SanctuaryStoryScreen').then(m => ({ default: m.SanctuaryStoryScreen }))
+);
+const ArtisansScreen = React.lazy(() =>
+  import('./components/ArtisansScreen').then(m => ({ default: m.ArtisansScreen }))
+);
+const DiagnosticScreen = React.lazy(() =>
+  import('./components/DiagnosticScreen').then(m => ({ default: m.DiagnosticScreen }))
+);
+const SavedScreen = React.lazy(() =>
+  import('./components/SavedScreen').then(m => ({ default: m.SavedScreen }))
+);
+const ProductDetailScreen = React.lazy(() =>
+  import('./components/ProductDetailScreen').then(m => ({ default: m.ProductDetailScreen }))
+);
+const PWAInstallModal = React.lazy(() =>
+  import('./components/PWAInstallModal').then(m => ({ default: m.PWAInstallModal }))
+);
 
 export default function App() {
   const [language, setLanguage] = useState<Language>('en');
@@ -285,15 +323,22 @@ export default function App() {
           />
         )}
 
-        {activeScreen === 'services' && (
-          <ServicesScreen
-            language={language}
-            onNavigate={navigateTo}
-            onSelectTreatment={handleSelectTreatment}
-            savedTreatmentIds={savedTreatmentIds}
-            onToggleSaveTreatment={handleToggleSaveTreatment}
-          />
-        )}
+        <React.Suspense
+          fallback={
+            <div className="flex-1 flex items-center justify-center min-h-[300px]">
+              <div className="w-7 h-7 rounded-full border-2 border-[#f2ca50] border-t-transparent animate-spin" />
+            </div>
+          }
+        >
+          {activeScreen === 'services' && (
+            <ServicesScreen
+              language={language}
+              onNavigate={navigateTo}
+              onSelectTreatment={handleSelectTreatment}
+              savedTreatmentIds={savedTreatmentIds}
+              onToggleSaveTreatment={handleToggleSaveTreatment}
+            />
+          )}
 
         {activeScreen === 'packages' && (
           <CuratedPackagesScreen
@@ -448,9 +493,11 @@ export default function App() {
             onSelectTreatmentToBook={handleSelectDiagnosticTreatment}
           />
         )}
-      </main>
+      </React.Suspense>
+    </main>
 
-      {/* Cart Modal Sheet */}
+    {/* Cart Modal Sheet */}
+    <React.Suspense fallback={null}>
       <CartModal
         isOpen={isCartModalOpen}
         onClose={() => setIsCartModalOpen(false)}
@@ -465,24 +512,27 @@ export default function App() {
         linkedAppointment={linkedAppointment}
         onUnlinkAppointment={() => setLinkedAppointment(null)}
       />
+    </React.Suspense>
 
-      {/* Bottom Sticky Navigation Bar - Hidden on dedicated booking, service detail, product detail, package modal & when cart modal or mobile menu is open */}
-      {isBottomNavVisible && (
-        <BottomNav
-          activeScreen={activeScreen}
-          onNavigate={navigateTo}
-          language={language}
-          pendingRequestsCount={appointments.length + orders.length}
-          onOpenCart={() => setIsCartModalOpen(true)}
-          cartCount={cart.reduce((sum, item) => sum + item.quantity, 0)}
-        />
-      )}
+    {/* Bottom Sticky Navigation Bar - Hidden on dedicated booking, service detail, product detail, package modal & when cart modal or mobile menu is open */}
+    {isBottomNavVisible && (
+      <BottomNav
+        activeScreen={activeScreen}
+        onNavigate={navigateTo}
+        language={language}
+        pendingRequestsCount={appointments.length + orders.length}
+        onOpenCart={() => setIsCartModalOpen(true)}
+        cartCount={cart.reduce((sum, item) => sum + item.quantity, 0)}
+      />
+    )}
 
-      {/* Global PWA Install Bottom Sheet Modal - Renders above BottomNav */}
+    {/* Global PWA Install Bottom Sheet Modal - Renders above BottomNav */}
+    <React.Suspense fallback={null}>
       <PWAInstallModal
         language={language}
         isBottomNavVisible={isBottomNavVisible}
       />
+    </React.Suspense>
     </div>
   );
 }
