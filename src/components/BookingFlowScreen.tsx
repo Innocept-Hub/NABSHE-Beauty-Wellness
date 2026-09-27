@@ -361,7 +361,7 @@ export const BookingFlowScreen: React.FC<BookingFlowScreenProps> = ({
           `----------------------------\n` +
           `✦ المنتجات لتجهيزها لزيارتي:\n` +
           `${productsListAr}\n\n` +
-          `الإجمالي: ${currentTotal.toFixed(2)} درهم (الخدمة: ${treatment.price} درهم | المنتجات: ${productsTotal} درهم | ضريبة 5%: ${vatAmount.toFixed(2)} درهم)\n` +
+          `الإجمالي: ${currentTotal.toFixed(2)} درهم (الخدمة: ${treatment.price.toFixed(2)} درهم | المنتجات: ${productsTotal.toFixed(2)} درهم | ضريبة 5%: ${vatAmount.toFixed(2)} درهم)\n` +
           `الاستلام: [الاستلام من الصالون]`;
       } else {
         whatsappMessage =
@@ -375,7 +375,7 @@ export const BookingFlowScreen: React.FC<BookingFlowScreenProps> = ({
           `----------------------------\n` +
           `✦ Products to prepare for my visit:\n` +
           `${productsListEn}\n\n` +
-          `Total: AED ${currentTotal.toFixed(2)} (Service: AED ${treatment.price} | Products: AED ${productsTotal} | VAT 5%: AED ${vatAmount.toFixed(2)})\n` +
+          `Total: AED ${currentTotal.toFixed(2)} (Service: AED ${treatment.price.toFixed(2)} | Products: AED ${productsTotal.toFixed(2)} | VAT 5%: AED ${vatAmount.toFixed(2)})\n` +
           `Fulfillment: [Pick Up at Salon]`;
       }
     } else {
@@ -389,7 +389,7 @@ export const BookingFlowScreen: React.FC<BookingFlowScreenProps> = ({
           `✦ الضيفة: ${clientName.trim()} (${clientPhone.trim()})\n` +
           (clientNotes.trim() ? `✦ ملاحظات: ${clientNotes.trim()}\n` : '') +
           `----------------------------\n` +
-          `الإجمالي: ${currentTotal.toFixed(2)} درهم (الخدمة: ${treatment.price} درهم | ضريبة 5%: ${vatAmount.toFixed(2)} درهم)\n` +
+          `الإجمالي: ${currentTotal.toFixed(2)} درهم (الخدمة: ${treatment.price.toFixed(2)} درهم | ضريبة 5%: ${vatAmount.toFixed(2)} درهم)\n` +
           `الاستلام: [حجز في الصالون]`;
       } else {
         whatsappMessage =
@@ -401,7 +401,7 @@ export const BookingFlowScreen: React.FC<BookingFlowScreenProps> = ({
           `✦ Guest: ${clientName.trim()} (${clientPhone.trim()})\n` +
           (clientNotes.trim() ? `✦ Notes: ${clientNotes.trim()}\n` : '') +
           `----------------------------\n` +
-          `Total: AED ${currentTotal.toFixed(2)} (Service: AED ${treatment.price} | VAT 5%: AED ${vatAmount.toFixed(2)})\n` +
+          `Total: AED ${currentTotal.toFixed(2)} (Service: AED ${treatment.price.toFixed(2)} | VAT 5%: AED ${vatAmount.toFixed(2)})\n` +
           `Fulfillment: [Salon Appointment]`;
       }
     }

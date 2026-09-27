@@ -6,12 +6,14 @@ interface PWAInlineBannerProps {
   language?: Language;
   className?: string;
   onInstalled?: () => void;
+  onAction?: () => void;
 }
 
 export const PWAInlineBanner: React.FC<PWAInlineBannerProps> = ({
   language = 'en',
   className = '',
   onInstalled,
+  onAction,
 }) => {
   const { isInstallable, openModal, hasNativePrompt, promptInstall } = usePWA();
   const isRtl = language === 'ar';
@@ -22,6 +24,9 @@ export const PWAInlineBanner: React.FC<PWAInlineBannerProps> = ({
 
   const handleClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
+    // Immediately dismiss drawer to prevent dual-overlay collision and frozen body scroll
+    onAction?.();
+
     if (hasNativePrompt) {
       const outcome = await promptInstall();
       if (outcome === 'accepted') {

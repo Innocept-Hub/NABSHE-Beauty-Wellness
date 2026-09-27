@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Language, ScreenType, ServicePackage } from '../types';
 import { SERVICE_PACKAGES } from '../data/mockData';
 
@@ -20,6 +20,14 @@ export const CuratedPackagesScreen: React.FC<CuratedPackagesScreenProps> = ({
   const [preferredWindow, setPreferredWindow] = useState<string>('Afternoon');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  useEffect(() => {
+    return () => {
+      timersRef.current.forEach(clearTimeout);
+      timersRef.current = [];
+    };
+  }, []);
 
   const handleOpenModal = (pkg: ServicePackage) => {
     setSelectedPackage(pkg);
@@ -28,6 +36,8 @@ export const CuratedPackagesScreen: React.FC<CuratedPackagesScreenProps> = ({
   };
 
   const handleCloseModal = () => {
+    timersRef.current.forEach(clearTimeout);
+    timersRef.current = [];
     setSelectedPackage(null);
     setIsSuccess(false);
     onModalChange?.(false);
@@ -36,16 +46,18 @@ export const CuratedPackagesScreen: React.FC<CuratedPackagesScreenProps> = ({
   const handleConfirmRequest = () => {
     if (!selectedPackage) return;
     setIsSubmitting(true);
-    setTimeout(() => {
+    const t1 = setTimeout(() => {
       setIsSubmitting(false);
       setIsSuccess(true);
-      setTimeout(() => {
+      const t2 = setTimeout(() => {
         onRequestSubmitted(selectedPackage, preferredWindow);
         setSelectedPackage(null);
         setIsSuccess(false);
         onModalChange?.(false);
       }, 1000);
+      timersRef.current.push(t2);
     }, 600);
+    timersRef.current.push(t1);
   };
 
   return (

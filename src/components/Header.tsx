@@ -397,6 +397,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <div className="order-1 md:order-2 w-full md:w-auto">
                   <PWAInlineBanner
                     language={language}
+                    onAction={() => setIsMobileMenuOpen(false)}
                     onInstalled={() => setIsMobileMenuOpen(false)}
                   />
                 </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Language, CartItem, UserProfile, BoutiqueOrder, ScreenType } from '../types';
 
 export interface LinkedAppointment {
@@ -48,6 +48,11 @@ export const CartModal: React.FC<CartModalProps> = ({
   const [isAppointmentIncluded, setIsAppointmentIncluded] = useState<boolean>(Boolean(linkedAppointment));
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [paymentNotice, setPaymentNotice] = useState<string | null>(null);
+
+  // Synchronize appointment inclusion when linkedAppointment prop changes
+  useEffect(() => {
+    setIsAppointmentIncluded(Boolean(linkedAppointment));
+  }, [linkedAppointment]);
 
   const areas = [
     'Al Wasl',
@@ -112,7 +117,7 @@ export const CartModal: React.FC<CartModalProps> = ({
         titleAr: item.product.titleAr,
         volume: item.product.volumeEn,
         qty: item.quantity,
-        price: item.product.price * item.quantity,
+        price: Math.round(item.product.price * item.quantity * 100) / 100,
         imageUrl: item.product.imageUrl,
       })),
     };
@@ -123,11 +128,11 @@ export const CartModal: React.FC<CartModalProps> = ({
     if (hasCombined && linkedAppointment) {
       // 1. Combined (Services + Products) WhatsApp format
       const productsListEn = cart
-        .map(i => `• ${i.quantity}x ${i.product.titleEn} (${i.product.volumeEn}) — AED ${i.product.price * i.quantity}`)
+        .map(i => `• ${i.quantity}x ${i.product.titleEn} (${i.product.volumeEn}) — AED ${((Math.round(i.product.price * 100) * i.quantity) / 100).toFixed(2)}`)
         .join('\n');
 
       const productsListAr = cart
-        .map(i => `• ${i.quantity}x ${i.product.titleAr} (${i.product.volumeAr}) — ${i.product.price * i.quantity} درهم`)
+        .map(i => `• ${i.quantity}x ${i.product.titleAr} (${i.product.volumeAr}) — ${((Math.round(i.product.price * 100) * i.quantity) / 100).toFixed(2)} درهم`)
         .join('\n');
 
       if (isRtl) {
@@ -139,7 +144,7 @@ export const CartModal: React.FC<CartModalProps> = ({
           `----------------------------\n` +
           `✦ المنتجات لتجهيزها لزيارتي:\n` +
           `${productsListAr}\n\n` +
-          `الإجمالي: ${total.toFixed(2)} درهم (الخدمة: ${servicePrice} درهم | المنتجات: ${productsSubtotal} درهم | ضريبة 5%: ${vatAmount.toFixed(2)} درهم)\n` +
+          `الإجمالي: ${total.toFixed(2)} درهم (الخدمة: ${servicePrice.toFixed(2)} درهم | المنتجات: ${productsSubtotal.toFixed(2)} درهم | ضريبة 5%: ${vatAmount.toFixed(2)} درهم)\n` +
           `الاستلام: [الاستلام من الصالون]`;
       } else {
         whatsappMessage =
@@ -150,17 +155,17 @@ export const CartModal: React.FC<CartModalProps> = ({
           `----------------------------\n` +
           `✦ Products to prepare for my visit:\n` +
           `${productsListEn}\n\n` +
-          `Total: AED ${total.toFixed(2)} (Service: AED ${servicePrice} | Products: AED ${productsSubtotal} | VAT 5%: AED ${vatAmount.toFixed(2)})\n` +
+          `Total: AED ${total.toFixed(2)} (Service: AED ${servicePrice.toFixed(2)} | Products: AED ${productsSubtotal.toFixed(2)} | VAT 5%: AED ${vatAmount.toFixed(2)})\n` +
           `Fulfillment: [Pick Up at Salon]`;
       }
     } else {
       // 2. Products Only WhatsApp format
       const productsListEn = cart
-        .map(i => `• ${i.quantity}x ${i.product.titleEn} (${i.product.volumeEn}) — AED ${i.product.price * i.quantity}`)
+        .map(i => `• ${i.quantity}x ${i.product.titleEn} (${i.product.volumeEn}) — AED ${((Math.round(i.product.price * 100) * i.quantity) / 100).toFixed(2)}`)
         .join('\n');
 
       const productsListAr = cart
-        .map(i => `• ${i.quantity}x ${i.product.titleAr} (${i.product.volumeAr}) — ${i.product.price * i.quantity} درهم`)
+        .map(i => `• ${i.quantity}x ${i.product.titleAr} (${i.product.volumeAr}) — ${((Math.round(i.product.price * 100) * i.quantity) / 100).toFixed(2)} درهم`)
         .join('\n');
 
       const fulfillmentLabelEn =
@@ -175,7 +180,7 @@ export const CartModal: React.FC<CartModalProps> = ({
           `✦ المنتجات:\n` +
           `${productsListAr}\n` +
           `----------------------------\n` +
-          `الإجمالي: ${total.toFixed(2)} درهم (المنتجات: ${productsSubtotal} درهم | ضريبة 5%: ${vatAmount.toFixed(2)} درهم)\n` +
+          `الإجمالي: ${total.toFixed(2)} درهم (المنتجات: ${productsSubtotal.toFixed(2)} درهم | ضريبة 5%: ${vatAmount.toFixed(2)} درهم${deliveryFee > 0 ? ` | التوصيل: ${deliveryFee.toFixed(2)} درهم` : ''})\n` +
           `طريقة الاستلام: ${fulfillmentLabelAr}`;
       } else {
         whatsappMessage =
@@ -184,19 +189,27 @@ export const CartModal: React.FC<CartModalProps> = ({
           `✦ Products:\n` +
           `${productsListEn}\n` +
           `----------------------------\n` +
-          `Total: AED ${total.toFixed(2)} (Products: AED ${productsSubtotal} | VAT 5%: AED ${vatAmount.toFixed(2)})\n` +
+          `Total: AED ${total.toFixed(2)} (Products: AED ${productsSubtotal.toFixed(2)} | VAT 5%: AED ${vatAmount.toFixed(2)}${deliveryFee > 0 ? ` | Delivery: AED ${deliveryFee.toFixed(2)}` : ''})\n` +
           `Fulfillment: ${fulfillmentLabelEn}`;
       }
     }
 
     const whatsappUrl = `https://wa.me/971509196975?text=${encodeURIComponent(whatsappMessage)}`;
 
-    setTimeout(() => {
-      setIsSubmitting(false);
+    setIsSubmitting(false);
+    try {
+      const tempAnchor = document.createElement('a');
+      tempAnchor.href = whatsappUrl;
+      tempAnchor.target = '_blank';
+      tempAnchor.rel = 'noopener noreferrer';
+      document.body.appendChild(tempAnchor);
+      tempAnchor.click();
+      document.body.removeChild(tempAnchor);
+    } catch {
       window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
-      onOrderConfirmed(newOrder);
-      onClose();
-    }, 400);
+    }
+    onOrderConfirmed(newOrder);
+    onClose();
   };
 
   const handleGatewayClick = (gateway: 'Ziina' | 'Telr') => {
@@ -398,7 +411,7 @@ export const CartModal: React.FC<CartModalProps> = ({
                         {isRtl ? item.product.volumeAr : item.product.volumeEn}
                       </span>
                       <span className="font-sans text-[13px] font-bold text-[#f2ca50] mt-0.5 block">
-                        AED {item.product.price * item.quantity}
+                        AED {((Math.round(item.product.price * 100) * item.quantity) / 100).toFixed(2)}
                       </span>
                     </div>
 

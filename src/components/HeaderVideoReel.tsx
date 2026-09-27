@@ -25,6 +25,24 @@ export const HeaderVideoReel: React.FC<HeaderVideoReelProps> = ({
     video.setAttribute('playsinline', '');
     video.setAttribute('webkit-playsinline', '');
 
+    let touchHandlerAttached = false;
+
+    const onFirstTouch = () => {
+      if (video) {
+        video.muted = true;
+        video.play().catch(() => {});
+      }
+      cleanupWindowListeners();
+    };
+
+    const cleanupWindowListeners = () => {
+      if (touchHandlerAttached) {
+        window.removeEventListener('touchstart', onFirstTouch);
+        window.removeEventListener('click', onFirstTouch);
+        touchHandlerAttached = false;
+      }
+    };
+
     const startPlayback = () => {
       if (!video) return;
       video.muted = true;
@@ -32,14 +50,11 @@ export const HeaderVideoReel: React.FC<HeaderVideoReelProps> = ({
       if (playPromise !== undefined) {
         playPromise.catch(() => {
           // If browser policy deferred playback until first interaction
-          const onFirstTouch = () => {
-            if (video) {
-              video.muted = true;
-              video.play().catch(() => {});
-            }
-          };
-          window.addEventListener('touchstart', onFirstTouch, { once: true, passive: true });
-          window.addEventListener('click', onFirstTouch, { once: true, passive: true });
+          if (!touchHandlerAttached) {
+            touchHandlerAttached = true;
+            window.addEventListener('touchstart', onFirstTouch, { once: true, passive: true });
+            window.addEventListener('click', onFirstTouch, { once: true, passive: true });
+          }
         });
       }
     };
@@ -50,6 +65,7 @@ export const HeaderVideoReel: React.FC<HeaderVideoReelProps> = ({
 
     return () => {
       video.removeEventListener('canplay', startPlayback);
+      cleanupWindowListeners();
     };
   }, [src]);
 
@@ -62,13 +78,14 @@ export const HeaderVideoReel: React.FC<HeaderVideoReelProps> = ({
         src={src}
         poster={poster}
         autoPlay
-        loop
         muted
+        loop
         playsInline
         webkit-playsinline="true"
         preload="auto"
-        className="w-full h-full object-cover rounded-2xl pointer-events-none"
+        className="w-full h-full object-cover object-center pointer-events-none"
       />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#131315] via-[#131315]/20 to-transparent pointer-events-none" />
     </div>
   );
 };

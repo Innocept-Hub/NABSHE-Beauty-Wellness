@@ -221,6 +221,7 @@ export default function App() {
     setOrders(prev => [newOrder, ...prev]);
     setLatestOrder(newOrder);
     setCart([]); // Clear cart
+    setLinkedAppointment(null); // Clear linked appointment to prevent state leak
     navigateTo('order-confirmation');
   };
 

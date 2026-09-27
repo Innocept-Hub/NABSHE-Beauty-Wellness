@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 
 export interface BeforeInstallPromptEvent extends Event {
   readonly platforms: string[];
@@ -43,6 +43,15 @@ export const PWAProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isInstalled, setIsInstalled] = useState<boolean>(false);
 
+  // Concurrency mutex lock to prevent concurrent calls to prompt()
+  const isPromptingRef = useRef<boolean>(false);
+  const deferredPromptRef = useRef<BeforeInstallPromptEvent | null>(null);
+
+  // Keep ref synchronized with state
+  useEffect(() => {
+    deferredPromptRef.current = deferredPrompt;
+  }, [deferredPrompt]);
+
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
@@ -52,31 +61,53 @@ export const PWAProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const ios = /iPhone|iPad|iPod/.test(navigator.userAgent) && !('MSStream' in window);
     setIsIos(ios);
 
-    const standalone =
-      window.matchMedia('(display-mode: standalone)').matches ||
+    // Initial standalone state
+    const mql = window.matchMedia('(display-mode: standalone)');
+    const isStandalone =
+      mql.matches ||
       (window.navigator as unknown as { standalone?: boolean }).standalone === true;
-    setIsInstalled(standalone);
+    setIsInstalled(isStandalone);
+
+    // Dynamic listener for display-mode changes (e.g. app installed during session)
+    const handleMediaChange = (e: MediaQueryListEvent) => {
+      if (e.matches) {
+        setIsInstalled(true);
+        setIsModalOpen(false);
+        setDeferredPrompt(null);
+        deferredPromptRef.current = null;
+      }
+    };
+
+    if (mql.addEventListener) {
+      mql.addEventListener('change', handleMediaChange);
+    } else {
+      mql.addListener(handleMediaChange);
+    }
 
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
-      setDeferredPrompt(e as BeforeInstallPromptEvent);
+      const promptEvent = e as BeforeInstallPromptEvent;
+      deferredPromptRef.current = promptEvent;
+      setDeferredPrompt(promptEvent);
     };
 
     const handleAppInstalled = () => {
+      deferredPromptRef.current = null;
       setDeferredPrompt(null);
       setIsInstalled(true);
       setIsModalOpen(false);
       try {
         localStorage.setItem(DISMISSED_DATE_KEY, Date.now().toString());
       } catch {
-        // ignore
+        // Safe storage fallback
       }
     };
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     window.addEventListener('appinstalled', handleAppInstalled);
 
-    // Initial 7-day cooldown check for automatically displaying modal
+    // Check cooldown safely without fragmented returns
+    let cooldownTimer: ReturnType<typeof setTimeout> | null = null;
     try {
       const dismissedDate = localStorage.getItem(DISMISSED_DATE_KEY);
       let isCooldownActive = false;
@@ -87,59 +118,79 @@ export const PWAProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         }
       }
 
-      // If not in standalone mode and cooldown is not active, display modal
-      if (!standalone && !isCooldownActive) {
-        const timer = setTimeout(() => {
+      if (!isStandalone && !isCooldownActive) {
+        cooldownTimer = setTimeout(() => {
           setIsModalOpen(true);
         }, 800);
-        return () => {
-          clearTimeout(timer);
-          window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-          window.removeEventListener('appinstalled', handleAppInstalled);
-        };
       }
     } catch {
-      // ignore
+      // ignore security exceptions in strict sandboxed iframes
     }
 
     return () => {
+      if (cooldownTimer) {
+        clearTimeout(cooldownTimer);
+      }
+      if (mql.removeEventListener) {
+        mql.removeEventListener('change', handleMediaChange);
+      } else {
+        mql.removeListener(handleMediaChange);
+      }
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
       window.removeEventListener('appinstalled', handleAppInstalled);
     };
   }, []);
 
-  const openModal = () => setIsModalOpen(true);
+  const openModal = () => {
+    if (!isInstalled) {
+      setIsModalOpen(true);
+    }
+  };
+
   const closeModal = () => setIsModalOpen(false);
 
   const promptInstall = async (): Promise<'accepted' | 'dismissed' | 'manual_guide'> => {
-    if (deferredPrompt) {
-      try {
-        await deferredPrompt.prompt();
-        const choiceResult = await deferredPrompt.userChoice;
-        setDeferredPrompt(null);
-        if (choiceResult.outcome === 'accepted') {
-          setIsInstalled(true);
-          setIsModalOpen(false);
-          try {
-            localStorage.setItem(DISMISSED_DATE_KEY, Date.now().toString());
-          } catch {
-            // ignore
-          }
-          return 'accepted';
-        }
-        return 'dismissed';
-      } catch (err) {
-        console.error('Error triggering PWA install prompt:', err);
-        setDeferredPrompt(null);
-        return 'dismissed';
-      }
+    const promptEvent = deferredPromptRef.current;
+    if (!promptEvent) {
+      return 'manual_guide';
     }
 
-    // Inside iframe or iOS where native event is suppressed
-    return 'manual_guide';
+    // Atomic mutex lock: prevents race condition / InvalidStateError on double invocation
+    if (isPromptingRef.current) {
+      return 'dismissed';
+    }
+
+    isPromptingRef.current = true;
+
+    try {
+      await promptEvent.prompt();
+      const choiceResult = await promptEvent.userChoice;
+
+      // Invalidate consumed prompt immediately
+      deferredPromptRef.current = null;
+      setDeferredPrompt(null);
+
+      if (choiceResult.outcome === 'accepted') {
+        setIsInstalled(true);
+        setIsModalOpen(false);
+        try {
+          localStorage.setItem(DISMISSED_DATE_KEY, Date.now().toString());
+        } catch {
+          // ignore
+        }
+        return 'accepted';
+      }
+      return 'dismissed';
+    } catch (err) {
+      console.error('Error triggering PWA install prompt:', err);
+      deferredPromptRef.current = null;
+      setDeferredPrompt(null);
+      return 'dismissed';
+    } finally {
+      isPromptingRef.current = false;
+    }
   };
 
-  // App is installable if not already running as standalone PWA
   const isInstallable = !isInstalled;
 
   return (

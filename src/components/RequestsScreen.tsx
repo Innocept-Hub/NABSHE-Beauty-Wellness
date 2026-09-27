@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Language, ScreenType, AppointmentRequest, BoutiqueOrder } from '../types';
 
 interface RequestsScreenProps {
@@ -18,23 +18,33 @@ export const RequestsScreen: React.FC<RequestsScreenProps> = ({
   const [activeTab, setActiveTab] = useState<'all' | 'treatments' | 'orders'>('all');
   const [rebookingId, setRebookingId] = useState<string | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  useEffect(() => {
+    return () => {
+      timersRef.current.forEach(clearTimeout);
+      timersRef.current = [];
+    };
+  }, []);
 
   const totalCount = appointments.length + orders.length;
 
   const handleRebook = (apt: AppointmentRequest) => {
     setRebookingId(apt.id);
-    setTimeout(() => {
+    const t1 = setTimeout(() => {
       setRebookingId(null);
       setToastMessage(
         isRtl
           ? `تم بدء إعادة حجز ${apt.treatmentTitleAr}`
           : `Initiating repeat booking for ${apt.treatmentTitleEn}`
       );
-      setTimeout(() => {
+      const t2 = setTimeout(() => {
         setToastMessage(null);
         onNavigate('booking');
       }, 1200);
+      timersRef.current.push(t2);
     }, 600);
+    timersRef.current.push(t1);
   };
 
   return (
