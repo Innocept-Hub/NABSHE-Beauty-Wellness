@@ -92,8 +92,8 @@ export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({ language = 'en
                 className="font-sans text-[12px] sm:text-[13px] text-[#e5e1e4] leading-snug mt-0.5"
               >
                 {isRtl
-                  ? 'قم بتثبيت تطبيق نابشيه لتجربة حجز أسرع وأسهل.'
-                  : 'Install NABSHÉ App for a faster booking experience.'}
+                  ? 'قم بتثبيت تطبيق نابشيه للوصول السريع وتجربة تسوق وحجز أسرع.'
+                  : 'Install NABSHÉ App for a Quick Access & faster experience.'}
               </p>
             </div>
           </div>
