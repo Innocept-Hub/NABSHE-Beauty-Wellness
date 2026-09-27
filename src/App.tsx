@@ -247,11 +247,16 @@ export default function App() {
     navigateTo('home');
   };
 
+  const isBottomNavVisible =
+    activeScreen !== 'booking' &&
+    activeScreen !== 'treatment-detail' &&
+    activeScreen !== 'product-detail' &&
+    !isPackageModalOpen &&
+    !isCartModalOpen &&
+    !isMobileMenuOpen;
+
   return (
     <div className="min-h-screen bg-[#131315] text-[#e5e1e4] font-sans antialiased selection:bg-[#f2ca50] selection:text-[#241a00] flex flex-col justify-between">
-      {/* Global PWA Install Bottom Sheet Modal */}
-      <PWAInstallModal language={language} />
-
       {/* Top Fixed Header with Bilingual Toggle & Profile Shortcut */}
       <Header
         language={language}
@@ -461,21 +466,22 @@ export default function App() {
       />
 
       {/* Bottom Sticky Navigation Bar - Hidden on dedicated booking, service detail, product detail, package modal & when cart modal or mobile menu is open */}
-      {activeScreen !== 'booking' &&
-        activeScreen !== 'treatment-detail' &&
-        activeScreen !== 'product-detail' &&
-        !isPackageModalOpen &&
-        !isCartModalOpen &&
-        !isMobileMenuOpen && (
-          <BottomNav
-            activeScreen={activeScreen}
-            onNavigate={navigateTo}
-            language={language}
-            pendingRequestsCount={appointments.length + orders.length}
-            onOpenCart={() => setIsCartModalOpen(true)}
-            cartCount={cart.reduce((sum, item) => sum + item.quantity, 0)}
-          />
-        )}
+      {isBottomNavVisible && (
+        <BottomNav
+          activeScreen={activeScreen}
+          onNavigate={navigateTo}
+          language={language}
+          pendingRequestsCount={appointments.length + orders.length}
+          onOpenCart={() => setIsCartModalOpen(true)}
+          cartCount={cart.reduce((sum, item) => sum + item.quantity, 0)}
+        />
+      )}
+
+      {/* Global PWA Install Bottom Sheet Modal - Renders above BottomNav */}
+      <PWAInstallModal
+        language={language}
+        isBottomNavVisible={isBottomNavVisible}
+      />
     </div>
   );
 }

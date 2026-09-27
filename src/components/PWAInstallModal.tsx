@@ -4,11 +4,15 @@ import { Language } from '../types';
 
 interface PWAInstallModalProps {
   language?: Language;
+  isBottomNavVisible?: boolean;
 }
 
 const DISMISSED_DATE_KEY = 'nabshe_pwa_dismissed_date';
 
-export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({ language = 'en' }) => {
+export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({
+  language = 'en',
+  isBottomNavVisible = true,
+}) => {
   const {
     isModalOpen,
     closeModal,
@@ -62,9 +66,14 @@ export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({ language = 'en
     }, 1200);
   };
 
+  // Position cleanly ABOVE the bottom navigation bar on mobile (which is ~76px high with the center button)
+  const bottomPositionClass = isBottomNavVisible
+    ? 'bottom-[84px] md:bottom-5'
+    : 'bottom-4 md:bottom-5';
+
   return (
     <div
-      className={`fixed bottom-16 sm:bottom-4 left-0 right-0 z-[70] p-3 sm:p-4 pointer-events-auto transition-all animate-in slide-in-from-bottom duration-300 ${
+      className={`fixed ${bottomPositionClass} left-0 right-0 z-[80] px-3 sm:px-4 pointer-events-auto transition-all animate-in slide-in-from-bottom duration-300 ${
         isRtl ? 'text-right' : 'text-left'
       }`}
       role="dialog"
@@ -72,10 +81,10 @@ export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({ language = 'en
       aria-describedby="pwa-install-description"
     >
       <div className="max-w-2xl mx-auto">
-        <div className="bg-[#1b1b1d]/98 backdrop-blur-2xl border border-[#f2ca50]/50 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-[0_12px_45px_rgba(0,0,0,0.9),0_0_25px_rgba(242,202,80,0.2)]">
+        <div className="relative bg-[#1b1b1d]/98 backdrop-blur-2xl border border-[#f2ca50]/50 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-[0_12px_45px_rgba(0,0,0,0.95),0_0_25px_rgba(242,202,80,0.22)]">
           {/* Main Install Prompt View */}
           {!showGuide ? (
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3.5 sm:gap-4">
               {/* Brand Logo & Copy */}
               <div className="flex items-center gap-3.5 w-full sm:w-auto">
                 <div className="w-12 h-12 rounded-2xl bg-[#201f21] border border-[#f2ca50]/40 flex items-center justify-center p-2 shrink-0 shadow-md">
@@ -91,7 +100,7 @@ export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({ language = 'en
                     spa
                   </span>
                 </div>
-                <div className="flex-1 min-w-0">
+                <div className="flex-1 min-w-0 pr-6 sm:pr-0">
                   <div className="flex items-center gap-2">
                     <span
                       id="pwa-install-title"
@@ -114,26 +123,35 @@ export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({ language = 'en
                 </div>
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end shrink-0">
+              {/* Action Buttons - Perfectly Matched Heights & Touch Targets */}
+              <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end shrink-0 pt-0.5 sm:pt-0">
                 <button
                   onClick={handleDismiss}
                   type="button"
-                  className="flex-1 sm:flex-none px-4 py-2.5 rounded-xl border border-[#353437] bg-[#201f21] text-[#d0c5af] hover:text-[#e5e1e4] hover:bg-[#2a2a2c] font-sans text-[12px] font-semibold transition-colors cursor-pointer text-center active:scale-95"
+                  className="flex-1 sm:flex-initial h-11 px-5 rounded-xl border border-[#353437] bg-[#201f21] hover:bg-[#2a2a2c] text-[#d0c5af] hover:text-[#e5e1e4] font-sans text-[13px] font-bold transition-all cursor-pointer flex items-center justify-center active:scale-95 leading-none"
                 >
                   {isRtl ? 'ليس الآن' : 'Not Now'}
                 </button>
                 <button
                   onClick={handleInstallClick}
                   type="button"
-                  className="flex-1 sm:flex-none px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#d4af37] via-[#f2ca50] to-[#ffe088] text-[#241a00] font-sans text-[12px] font-bold hover:brightness-110 active:scale-95 transition-all shadow-[0_2px_14px_rgba(242,202,80,0.35)] cursor-pointer text-center flex items-center justify-center gap-1.5"
+                  className="flex-1 sm:flex-initial h-11 px-6 rounded-xl bg-gradient-to-r from-[#d4af37] via-[#f2ca50] to-[#ffe088] text-[#241a00] font-sans text-[13px] font-bold hover:brightness-110 active:scale-95 transition-all shadow-[0_2px_14px_rgba(242,202,80,0.35)] cursor-pointer flex items-center justify-center gap-1.5 leading-none"
                 >
-                  <span className="material-symbols-outlined text-[16px]">
+                  <span className="material-symbols-outlined text-[17px] shrink-0">
                     download
                   </span>
                   <span>{isRtl ? 'تثبيت' : 'Install'}</span>
                 </button>
               </div>
+
+              {/* Top-Right Quick Close Icon */}
+              <button
+                onClick={handleDismiss}
+                className="absolute top-2.5 right-2.5 sm:hidden w-6 h-6 rounded-full bg-[#201f21]/80 text-[#a09c9f] hover:text-[#e5e1e4] flex items-center justify-center cursor-pointer"
+                aria-label="Close"
+              >
+                <span className="material-symbols-outlined text-[14px]">close</span>
+              </button>
             </div>
           ) : (
             /* Interactive Install Guide (For AI Studio Preview & iOS Safari) */
@@ -192,12 +210,12 @@ export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({ language = 'en
                           : 'Click the install icon in your browser address bar or menu ⋮ and select "Install NABSHÉ App".')}
                   </p>
 
-                  <div className="flex flex-wrap items-center gap-2 pt-1">
+                  <div className="flex flex-wrap items-center gap-2.5 pt-1">
                     <a
                       href={window.location.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#f2ca50] text-[#241a00] font-sans text-[12px] font-bold hover:brightness-110 active:scale-95 transition-all shadow-md"
+                      className="h-10 inline-flex items-center gap-1.5 px-4 rounded-xl bg-[#f2ca50] text-[#241a00] font-sans text-[12px] font-bold hover:brightness-110 active:scale-95 transition-all shadow-md leading-none"
                     >
                       <span className="material-symbols-outlined text-[15px]">
                         open_in_new
@@ -210,7 +228,7 @@ export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({ language = 'en
                     <button
                       onClick={handleSimulateInstall}
                       type="button"
-                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-[#353437] bg-[#201f21] hover:bg-[#2a2a2c] text-[#d0c5af] hover:text-[#e5e1e4] font-sans text-[12px] font-medium transition-colors cursor-pointer"
+                      className="h-10 inline-flex items-center gap-1.5 px-4 rounded-xl border border-[#353437] bg-[#201f21] hover:bg-[#2a2a2c] text-[#d0c5af] hover:text-[#e5e1e4] font-sans text-[12px] font-medium transition-colors cursor-pointer leading-none"
                     >
                       <span className="material-symbols-outlined text-[15px] text-[#f2ca50]">
                         check
@@ -223,7 +241,7 @@ export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({ language = 'en
                     <button
                       onClick={handleDismiss}
                       type="button"
-                      className="px-3 py-2 rounded-xl text-[#a09c9f] hover:text-[#e5e1e4] text-[12px] transition-colors ml-auto cursor-pointer"
+                      className="h-10 px-3 rounded-xl text-[#a09c9f] hover:text-[#e5e1e4] text-[12px] transition-colors ml-auto cursor-pointer flex items-center justify-center leading-none"
                     >
                       {isRtl ? 'إغلاق' : 'Close'}
                     </button>
