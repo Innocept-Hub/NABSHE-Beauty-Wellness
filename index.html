@@ -18,7 +18,11 @@
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <!-- LCP Image Preload: Discovered at millisecond 0 with High Fetch Priority -->
+    <!-- 1. High-priority preconnect tags in <head> BEFORE the font links -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- 3. Preload main hero image with highest network priority (fetchpriority="high") -->
     <link
       rel="preload"
       as="image"
@@ -26,11 +30,7 @@
       fetchpriority="high"
     />
 
-    <!-- Preconnect to Google Fonts domains -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-    <!-- Non-Render-Blocking Asynchronous Font Loading (Swap enabled, subsetted Material Symbols) -->
+    <!-- 2. Google Fonts stylesheet links with &display=swap for immediate text rendering with system fallbacks -->
     <link
       rel="preload"
       as="style"
