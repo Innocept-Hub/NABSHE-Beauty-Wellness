@@ -91,14 +91,8 @@ export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({
                   <img
                     src="/icon-192.png"
                     alt="NABSHÉ App Icon"
-                    className="w-full h-full object-contain drop-shadow-sm"
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                    }}
+                    className="w-full h-full object-contain"
                   />
-                  <span className="material-symbols-outlined text-[24px] text-[#f2ca50] hidden only:block">
-                    spa
-                  </span>
                 </div>
                 <div className="flex-1 min-w-0 pr-6 sm:pr-0">
                   <div className="flex items-center gap-2">
