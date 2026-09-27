@@ -1,109 +1,57 @@
 import React, { useState, useEffect } from 'react';
+import { usePWA } from '../context/PWAContext';
 import { Language } from '../types';
-
-interface BeforeInstallPromptEvent extends Event {
-  readonly platforms: string[];
-  readonly userChoice: Promise<{
-    outcome: 'accepted' | 'dismissed';
-    platform: string;
-  }>;
-  prompt(): Promise<void>;
-}
 
 interface PWAInstallModalProps {
   language?: Language;
 }
 
-const STORAGE_KEY = 'nabshe_pwa_dismissed';
+const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
+const DISMISSED_DATE_KEY = 'nabshe_pwa_dismissed_date';
 
 export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({ language = 'en' }) => {
-  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
-  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const { isInstallable, promptInstall } = usePWA();
+  const [isDismissed, setIsDismissed] = useState<boolean>(true);
   const isRtl = language === 'ar';
 
   useEffect(() => {
-    // Check if dismissed before
     try {
-      if (localStorage.getItem(STORAGE_KEY)) {
-        return;
-      }
-    } catch {
-      // In case localStorage is blocked in private browsing
-    }
-
-    // Check if already running in standalone/installed mode
-    const isStandalone =
-      window.matchMedia('(display-mode: standalone)').matches ||
-      (window.navigator as unknown as { standalone?: boolean }).standalone === true;
-
-    if (isStandalone) {
-      return;
-    }
-
-    const handleBeforeInstallPrompt = (e: Event) => {
-      e.preventDefault();
-      try {
-        if (!localStorage.getItem(STORAGE_KEY)) {
-          setDeferredPrompt(e as BeforeInstallPromptEvent);
-          setIsVisible(true);
+      const dismissedDate = localStorage.getItem(DISMISSED_DATE_KEY);
+      if (dismissedDate) {
+        const timestamp = parseInt(dismissedDate, 10);
+        if (!isNaN(timestamp) && Date.now() - timestamp < SEVEN_DAYS_MS) {
+          setIsDismissed(true);
+          return;
         }
-      } catch {
-        setDeferredPrompt(e as BeforeInstallPromptEvent);
-        setIsVisible(true);
       }
-    };
-
-    const handleAppInstalled = () => {
-      try {
-        localStorage.setItem(STORAGE_KEY, 'true');
-      } catch {
-        // ignore
-      }
-      setIsVisible(false);
-      setDeferredPrompt(null);
-    };
-
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    window.addEventListener('appinstalled', handleAppInstalled);
-
-    return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-      window.removeEventListener('appinstalled', handleAppInstalled);
-    };
+      setIsDismissed(false);
+    } catch {
+      setIsDismissed(false);
+    }
   }, []);
 
   const handleInstall = async () => {
-    if (!deferredPrompt) return;
-
-    try {
-      await deferredPrompt.prompt();
-      const choiceResult = await deferredPrompt.userChoice;
-      if (choiceResult.outcome === 'accepted') {
-        try {
-          localStorage.setItem(STORAGE_KEY, 'true');
-        } catch {
-          // ignore
-        }
+    const success = await promptInstall();
+    if (success) {
+      try {
+        localStorage.setItem(DISMISSED_DATE_KEY, Date.now().toString());
+      } catch {
+        // ignore
       }
-      setIsVisible(false);
-      setDeferredPrompt(null);
-    } catch (err) {
-      console.error('Error triggering PWA install prompt:', err);
-      setIsVisible(false);
     }
+    setIsDismissed(true);
   };
 
   const handleDismiss = () => {
     try {
-      localStorage.setItem(STORAGE_KEY, 'true');
+      localStorage.setItem(DISMISSED_DATE_KEY, Date.now().toString());
     } catch {
       // ignore
     }
-    setIsVisible(false);
-    setDeferredPrompt(null);
+    setIsDismissed(true);
   };
 
-  if (!isVisible || !deferredPrompt) {
+  if (isDismissed || !isInstallable) {
     return null;
   }
 
