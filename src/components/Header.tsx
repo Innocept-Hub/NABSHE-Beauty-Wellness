@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Heart } from 'lucide-react';
 import { Divide as Hamburger } from 'hamburger-react';
 import { Language, ScreenType } from '../types';
-import { PWAInstallButton } from './PWAInstallButton';
 
 interface HeaderProps {
   language: Language;
@@ -259,9 +258,6 @@ export const Header: React.FC<HeaderProps> = ({
               )}
             </button>
 
-            {/* PWA Install Button (Compact - Desktop/Tablet/Mobile Header) */}
-            <PWAInstallButton language={language} variant="compact" />
-
             {/* Bilingual Language Switcher */}
             <div className="inline-flex items-center bg-[#201f21] rounded-full p-0.5 border border-[#353437]/50 shadow-inner">
               <button
@@ -332,13 +328,6 @@ export const Header: React.FC<HeaderProps> = ({
               isRtl ? 'text-right' : 'text-left'
             }`}
           >
-            {/* Prominent PWA Install Banner inside Mobile Drawer */}
-            <PWAInstallButton
-              language={language}
-              variant="full"
-              onInstalled={() => setIsMobileMenuOpen(false)}
-            />
-
             {/* Menu Links Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 sm:gap-2">
               {navItems.map((item) => {

@@ -38,6 +38,7 @@ import { ArtisansScreen } from './components/ArtisansScreen';
 import { DiagnosticScreen } from './components/DiagnosticScreen';
 import { SavedScreen } from './components/SavedScreen';
 import { ProductDetailScreen } from './components/ProductDetailScreen';
+import { PWAInstallModal } from './components/PWAInstallModal';
 import { useScrollReveal } from './utils/useScrollReveal';
 
 export default function App() {
@@ -248,6 +249,9 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#131315] text-[#e5e1e4] font-sans antialiased selection:bg-[#f2ca50] selection:text-[#241a00] flex flex-col justify-between">
+      {/* Global PWA Install Bottom Sheet Modal */}
+      <PWAInstallModal language={language} />
+
       {/* Top Fixed Header with Bilingual Toggle & Profile Shortcut */}
       <Header
         language={language}
