@@ -87,11 +87,11 @@ export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({
             <div className="flex flex-col sm:flex-row items-center justify-between gap-3.5 sm:gap-4">
               {/* Brand Logo & Copy */}
               <div className="flex items-center gap-3.5 w-full sm:w-auto">
-                <div className="w-12 h-12 rounded-2xl bg-[#201f21] border border-[#f2ca50]/40 flex items-center justify-center p-2 shrink-0 shadow-md">
+                <div className="w-12 h-12 rounded-2xl bg-[#201f21] border border-[#f2ca50]/40 flex items-center justify-center p-1.5 shrink-0 shadow-md overflow-hidden">
                   <img
-                    src="/nabshe-logo.png"
-                    alt="NABSHÉ Logo"
-                    className="w-full h-full object-contain"
+                    src="/icon-192.png"
+                    alt="NABSHÉ App Icon"
+                    className="w-full h-full object-contain drop-shadow-sm"
                     onError={(e) => {
                       e.currentTarget.style.display = 'none';
                     }}

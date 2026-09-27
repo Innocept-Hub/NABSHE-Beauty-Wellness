@@ -47,10 +47,12 @@ export const PWAInlineBanner: React.FC<PWAInlineBannerProps> = ({
       }}
     >
       <div className="flex items-center gap-2.5 min-w-0">
-        <div className="w-7 h-7 rounded-lg bg-[#f2ca50]/15 border border-[#f2ca50]/30 flex items-center justify-center shrink-0">
-          <span className="material-symbols-outlined text-[17px] text-[#f2ca50]">
-            install_mobile
-          </span>
+        <div className="w-7 h-7 rounded-lg bg-[#201f21] border border-[#f2ca50]/40 flex items-center justify-center shrink-0 overflow-hidden p-0.5 shadow-sm">
+          <img
+            src="/icon-192.png"
+            alt="NABSHÉ App Icon"
+            className="w-full h-full object-contain"
+          />
         </div>
         <div className="min-w-0">
           <div className="flex items-center gap-1.5">
