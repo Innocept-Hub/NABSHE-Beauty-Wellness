@@ -204,6 +204,8 @@ export const CurationBanner: React.FC<CurationBannerProps> = ({
               <img
                 src={banner.imageUrl}
                 alt={banner.titleEn}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover group-hover/video:scale-105 transition-transform duration-700 opacity-80"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src = '/assets/Images/Body-Oil.jpg';

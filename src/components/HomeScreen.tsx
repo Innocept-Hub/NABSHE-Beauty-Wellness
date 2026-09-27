@@ -126,6 +126,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           <img
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6j7WR1aZZhmNtH4rY9JJb--A5GY7hfoop8fWHZo_YYkIFCwJbyxCPuiO18acyS2sjjeO2E_hkYh1129rvcleHzRElHDS8642K0I1uninuLS53kTam1umlLLmT8adw9Ga8jeNWJz28RZ2voO7At0aY7nkrKVnBIOZtzQ5xAkJZd860wZ0ip6ikEPThOiBXR_seHpk3w428cwDLv684_CoSN_NLvkRc-o0ZX5teIgS3e1BR2T9p95kz"
             alt={isRtl ? 'فن الجمال والعناية بالبشرة' : 'The Art of Beauty & Restorative Care'}
+            loading="eager"
             fetchPriority="high"
             decoding="async"
             width={824}
@@ -307,6 +308,8 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
                           <img
                             src={treatment.imageUrl}
                             alt={isRtl ? treatment.titleAr : treatment.titleEn}
+                            loading="lazy"
+                            decoding="async"
                             className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
                           />
                         </div>
@@ -547,6 +550,8 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
                           <img
                             src={product.imageUrl}
                             alt={isRtl ? product.titleAr : product.titleEn}
+                            loading="lazy"
+                            decoding="async"
                             className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
                           />
                         </div>

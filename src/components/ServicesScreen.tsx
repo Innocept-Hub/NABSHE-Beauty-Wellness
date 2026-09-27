@@ -282,6 +282,8 @@ export const ServicesScreen: React.FC<ServicesScreenProps> = ({
                             <img
                               src={treatment.imageUrl}
                               alt={isRtl ? treatment.titleAr : treatment.titleEn}
+                              loading="lazy"
+                              decoding="async"
                               className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
                             />
                           </div>
