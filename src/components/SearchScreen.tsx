@@ -223,6 +223,10 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
                           <img
                             src={t.imageUrl}
                             alt={isRtl ? t.titleAr : t.titleEn}
+                            loading="lazy"
+                            decoding="async"
+                            width={400}
+                            height={300}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                           />
                         </div>
@@ -281,6 +285,10 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
                           <img
                             src={p.imageUrl}
                             alt={isRtl ? p.titleAr : p.titleEn}
+                            loading="lazy"
+                            decoding="async"
+                            width={400}
+                            height={300}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                           />
                         </div>

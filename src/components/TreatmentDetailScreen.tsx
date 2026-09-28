@@ -136,6 +136,11 @@ export const TreatmentDetailScreen: React.FC<TreatmentDetailScreenProps> = ({
           <img
             src={treatment.imageUrl}
             alt={treatment.titleEn}
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+            width={800}
+            height={400}
             className="w-full h-full object-cover object-center"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#1b1b1d] via-[#1b1b1d]/85 via-45% to-transparent pointer-events-none"></div>
@@ -343,6 +348,10 @@ export const TreatmentDetailScreen: React.FC<TreatmentDetailScreenProps> = ({
                       <img
                         src={prod.imageUrl}
                         alt={prod.nameEn}
+                        loading="lazy"
+                        decoding="async"
+                        width={56}
+                        height={56}
                         className="w-full h-full object-cover group-hover/prod:scale-105 transition-transform"
                       />
                     </div>

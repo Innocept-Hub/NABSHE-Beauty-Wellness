@@ -106,6 +106,10 @@ export const CuratedPackagesScreen: React.FC<CuratedPackagesScreenProps> = ({
               <img
                 src={pkg.imageUrl}
                 alt={pkg.titleEn}
+                loading="lazy"
+                decoding="async"
+                width={600}
+                height={350}
                 className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#1b1b1d] via-[#1b1b1d]/80 via-40% to-transparent pointer-events-none"></div>

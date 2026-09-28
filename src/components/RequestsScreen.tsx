@@ -155,6 +155,10 @@ export const RequestsScreen: React.FC<RequestsScreenProps> = ({
                     <img
                       src={apt.treatmentImage}
                       alt={apt.treatmentTitleEn}
+                      loading="lazy"
+                      decoding="async"
+                      width={64}
+                      height={64}
                       className="w-16 h-16 rounded-xl object-cover border border-[#353437]/50 shrink-0"
                     />
                     <div className="flex-1 min-w-0">

@@ -56,6 +56,10 @@ export const PWAInlineBanner: React.FC<PWAInlineBannerProps> = ({
           <img
             src="/icon-192.png"
             alt="NABSHÉ App Icon"
+            width={28}
+            height={28}
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-contain"
           />
         </div>

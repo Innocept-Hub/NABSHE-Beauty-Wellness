@@ -682,6 +682,10 @@ export const BookingFlowScreen: React.FC<BookingFlowScreenProps> = ({
                   <img
                     src={spec.img}
                     alt={spec.nameEn}
+                    loading="lazy"
+                    decoding="async"
+                    width={40}
+                    height={40}
                     onError={(e) => {
                       e.currentTarget.src = 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80';
                     }}
@@ -727,6 +731,10 @@ export const BookingFlowScreen: React.FC<BookingFlowScreenProps> = ({
                     <img
                       src={product.imageUrl}
                       alt={product.titleEn}
+                      loading="lazy"
+                      decoding="async"
+                      width={56}
+                      height={56}
                       className="w-14 h-14 rounded-xl object-cover bg-[#131315] border border-[#353437]/50 shrink-0"
                     />
                     <div className="flex flex-col min-w-0 flex-1">
@@ -799,6 +807,10 @@ export const BookingFlowScreen: React.FC<BookingFlowScreenProps> = ({
                         <img
                           src={product.imageUrl}
                           alt={product.titleEn}
+                          loading="lazy"
+                          decoding="async"
+                          width={56}
+                          height={56}
                           className="w-14 h-14 rounded-xl object-cover bg-[#131315] border border-[#353437]/50 shrink-0"
                         />
                         <div className="flex flex-col min-w-0 flex-1">

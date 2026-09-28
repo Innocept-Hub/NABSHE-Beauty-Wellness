@@ -131,12 +131,13 @@ export const Header: React.FC<HeaderProps> = ({
               title={isRtl ? 'الصفحة الرئيسية' : 'Return to Homepage'}
             >
               <img
-                src="/nabshe-logo.png"
+                src="/nabshe-logo.webp"
                 width={130}
                 height={40}
+                loading="eager"
+                decoding="async"
                 onError={(e) => {
-                  e.currentTarget.src =
-                    'https://lh3.googleusercontent.com/aida/AEtjO1XZAiCzCucs9FzXbjnewf2ods18SiVfWE0oGX7zgwaUoOtSYVejhiW3h_UAykbB3qnl5a7JW2sXiU7lqQe-gfPpsZ9a3Ii7-9cq_i3GmEoOQzMjxLnp2cLlFo9mvGv1Jb6FffFW6ckjVRSE_GVUkia9iYtBOAjHKjY5todVjBPFDYGFj0fbk41wfV69VYXFfZ3rJ9ahfmcNshu1kRpuN6kW4BPHGnWheauwprA4OJjUhHQ8EDF2jcXzF98';
+                  e.currentTarget.src = '/nabshe-logo.png';
                 }}
                 alt="NABSHÉ Beauty & Wellness"
                 className="h-8 sm:h-9 md:h-10 lg:h-12 xl:h-[50px] w-auto max-w-[130px] sm:max-w-[150px] md:max-w-[170px] lg:max-w-[210px] xl:max-w-[230px] object-contain py-0.5 group-hover:scale-105 transition-transform"
@@ -309,6 +310,10 @@ export const Header: React.FC<HeaderProps> = ({
               <img
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZDwYEDZ_lYkEaYquFX8Mr59XuZZ-BQetk4ssD6ccBzbMnn9n0lqHGiIdAaqbM-Of-qinCd6sjXXHi_gLRQRQQCrMg1JRki5SbCNQl12C7HjrKE0K-MjuR1XayBpxuua0SWyfvO-mJGNSdpdLOUBuisIwhDKnjatsJFoORMFa9TEYv7jKLA0jPENLXmIsnkOq0-NGQktetGOtxtjQoHxXFfzCd0yX8LVw6x427AoURsFCOvGDCLKz2"
                 alt="Client Profile"
+                width={28}
+                height={28}
+                loading="lazy"
+                decoding="async"
                 className="w-7 h-7 rounded-full object-cover"
               />
               <span className="absolute bottom-0 right-0 w-2 h-2 bg-[#47ea7a] rounded-full ring-2 ring-[#131315]"></span>

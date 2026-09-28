@@ -98,6 +98,10 @@ export const OrderConfirmationScreen: React.FC<OrderConfirmationScreenProps> = (
                 <img
                   src={item.imageUrl}
                   alt={item.titleEn}
+                  loading="lazy"
+                  decoding="async"
+                  width={48}
+                  height={48}
                   className="w-12 h-12 rounded-lg object-cover bg-[#131315] border border-[#353437]/40 shrink-0"
                 />
                 <div className="flex flex-col min-w-0">

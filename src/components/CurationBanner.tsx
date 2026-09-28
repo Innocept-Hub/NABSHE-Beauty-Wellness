@@ -41,7 +41,7 @@ const SERVICE_BANNERS: BannerContent[] = [
     mediaBadgeAr: 'فيديو حصري للملتقى',
     videoDuration: '0:45',
     bgGradient: 'from-[#201f21] via-[#2d281e] to-[#1b1b1d]',
-    imageUrl: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80',
     targetScreen: 'booking',
   },
   {
@@ -57,7 +57,7 @@ const SERVICE_BANNERS: BannerContent[] = [
     mediaBadgeAr: 'فيلم بدقة 4K',
     videoDuration: '1:12',
     bgGradient: 'from-[#1e1c24] via-[#24212b] to-[#1b1b1d]',
-    imageUrl: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=1200&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=800&q=80',
     targetScreen: 'services',
   },
   {
@@ -73,7 +73,7 @@ const SERVICE_BANNERS: BannerContent[] = [
     mediaBadgeAr: 'جولة فيديو داخل الأجنحة',
     videoDuration: '0:58',
     bgGradient: 'from-[#201f21] via-[#2c2225] to-[#1b1b1d]',
-    imageUrl: 'https://images.unsplash.com/photo-1519415943484-9fa1873496d4?auto=format&fit=crop&w=1200&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1519415943484-9fa1873496d4?auto=format&fit=crop&w=800&q=80',
     targetScreen: 'vip',
   },
 ];
@@ -92,7 +92,7 @@ const PRODUCT_BANNERS: BannerContent[] = [
     mediaBadgeAr: 'فيلم وثائقي للمكونات',
     videoDuration: '0:50',
     bgGradient: 'from-[#241e1c] via-[#2b2420] to-[#1b1b1d]',
-    imageUrl: '/assets/Images/Hair-Serum.jpg',
+    imageUrl: '/assets/Images/Hair-Serum.webp',
     targetScreen: 'shop',
   },
   {
@@ -108,7 +108,7 @@ const PRODUCT_BANNERS: BannerContent[] = [
     mediaBadgeAr: 'فيديو توضيحي للاستخدام',
     videoDuration: '0:35',
     bgGradient: 'from-[#1f2022] via-[#26242a] to-[#1b1b1d]',
-    imageUrl: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1200&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80',
     targetScreen: 'shop',
   },
 ];
@@ -206,6 +206,8 @@ export const CurationBanner: React.FC<CurationBannerProps> = ({
                 alt={banner.titleEn}
                 loading="lazy"
                 decoding="async"
+                width={800}
+                height={500}
                 className="w-full h-full object-cover group-hover/video:scale-105 transition-transform duration-700 opacity-80"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src = '/assets/Images/Body-Oil.jpg';

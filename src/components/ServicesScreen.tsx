@@ -284,6 +284,8 @@ export const ServicesScreen: React.FC<ServicesScreenProps> = ({
                               alt={isRtl ? treatment.titleAr : treatment.titleEn}
                               loading="lazy"
                               decoding="async"
+                              width={400}
+                              height={300}
                               className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
                             />
                           </div>

@@ -153,6 +153,11 @@ export const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({
             <img
               src={product.imageUrl}
               alt={product.titleEn}
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+              width={600}
+              height={600}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#131315]/80 via-transparent to-transparent pointer-events-none" />
@@ -380,6 +385,10 @@ export const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({
                   <img
                     src={rel.imageUrl}
                     alt={rel.titleEn}
+                    loading="lazy"
+                    decoding="async"
+                    width={300}
+                    height={300}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                   />
                 </div>
@@ -422,6 +431,10 @@ export const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({
             <img
               src={product.imageUrl}
               alt={product.titleEn}
+              loading="lazy"
+              decoding="async"
+              width={800}
+              height={800}
               className="max-h-[75vh] w-auto max-w-full rounded-2xl object-contain shadow-2xl border border-[#353437]/60"
             />
             <div className="mt-3 text-center">

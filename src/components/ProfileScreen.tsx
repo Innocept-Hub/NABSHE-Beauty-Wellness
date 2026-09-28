@@ -100,6 +100,10 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
                 <img
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZDwYEDZ_lYkEaYquFX8Mr59XuZZ-BQetk4ssD6ccBzbMnn9n0lqHGiIdAaqbM-Of-qinCd6sjXXHi_gLRQRQQCrMg1JRki5SbCNQl12C7HjrKE0K-MjuR1XayBpxuua0SWyfvO-mJGNSdpdLOUBuisIwhDKnjatsJFoORMFa9TEYv7jKLA0jPENLXmIsnkOq0-NGQktetGOtxtjQoHxXFfzCd0yX8LVw6x427AoURsFCOvGDCLKz2"
                   alt="Client Avatar"
+                  loading="lazy"
+                  decoding="async"
+                  width={64}
+                  height={64}
                   className="w-16 h-16 rounded-full object-cover border-2 border-[#f2ca50]/80 shadow-md"
                 />
                 <span className="absolute bottom-0 right-0 w-4 h-4 bg-[#47ea7a] rounded-full ring-2 ring-[#131315]"></span>

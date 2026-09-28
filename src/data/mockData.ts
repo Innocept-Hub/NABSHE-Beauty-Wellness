@@ -326,7 +326,7 @@ export const BOUTIQUE_PRODUCTS: BoutiqueProduct[] = [
     tabbyInstallment: 105,
     inStock: true,
     category: 'serums',
-    imageUrl: '/assets/Images/Peptide-Serum.png',
+    imageUrl: '/assets/Images/Peptide-Serum.webp',
     descriptionEn: 'Advanced copper tripeptide and bioactive matrixyl to boost skin bounce, stimulate collagen, and soften expression lines.',
     descriptionAr: 'تركيبة ببتيدات النحاس والماتريكسيل الحيوي لتعزيز مرونة البشرة وتحفيز الكولاجين وتنعيم الخطوط التعبيرية.',
     ingredientsEn: 'Aqua, Copper Tripeptide-1, Palmitoyl Tripeptide-5, Hyaluronic Acid, Niacinamide, Glycerin.',

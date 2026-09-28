@@ -91,6 +91,10 @@ export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({
                   <img
                     src="/icon-192.png"
                     alt="NABSHÉ App Icon"
+                    width={48}
+                    height={48}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-contain"
                   />
                 </div>

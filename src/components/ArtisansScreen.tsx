@@ -157,6 +157,10 @@ export const ArtisansScreen: React.FC<ArtisansScreenProps> = ({
                 <img
                   src={specialist.imageUrl}
                   alt={specialist.nameEn}
+                  loading="lazy"
+                  decoding="async"
+                  width={64}
+                  height={64}
                   className="w-16 h-16 rounded-full object-cover border-2 border-[#f2ca50]/60 shadow-md shrink-0 bg-[#201f21]"
                 />
 

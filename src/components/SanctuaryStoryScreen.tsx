@@ -85,6 +85,10 @@ export const SanctuaryStoryScreen: React.FC<SanctuaryStoryScreenProps> = ({
         <img
           src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6j7WR1aZZhmNtH4rY9JJb--A5GY7hfoop8fWHZo_YYkIFCwJbyxCPuiO18acyS2sjjeO2E_hkYh1129rvcleHzRElHDS8642K0I1uninuLS53kTam1umlLLmT8adw9Ga8jeNWJz28RZ2voO7At0aY7nkrKVnBIOZtzQ5xAkJZd860wZ0ip6ikEPThOiBXR_seHpk3w428cwDLv684_CoSN_NLvkRc-o0ZX5teIgS3e1BR2T9p95kz"
           alt="NABSHÉ Interior"
+          loading="lazy"
+          decoding="async"
+          width={800}
+          height={400}
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#131315] via-[#131315]/40 to-transparent"></div>

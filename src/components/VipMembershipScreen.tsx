@@ -131,12 +131,15 @@ export const VipMembershipScreen: React.FC<VipMembershipScreenProps> = ({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <img
-                    src="/nabshe-logo.png"
+                    src="/nabshe-logo.webp"
                     alt="NABSHÉ Logo"
+                    width={100}
+                    height={28}
+                    loading="lazy"
+                    decoding="async"
                     className="h-7 w-auto object-contain"
                     onError={(e) => {
-                      e.currentTarget.src =
-                        'https://lh3.googleusercontent.com/aida/AEtjO1XZAiCzCucs9FzXbjnewf2ods18SiVfWE0oGX7zgwaUoOtSYVejhiW3h_UAykbB3qnl5a7JW2sXiU7lqQe-gfPpsZ9a3Ii7-9cq_i3GmEoOQzMjxLnp2cLlFo9mvGv1Jb6FffFW6ckjVRSE_GVUkia9iYtBOAjHKjY5todVjBPFDYGFj0fbk41wfV69VYXFfZ3rJ9ahfmcNshu1kRpuN6kW4BPHGnWheauwprA4OJjUhHQ8EDF2jcXzF98';
+                      e.currentTarget.src = '/nabshe-logo.png';
                     }}
                   />
                 </div>

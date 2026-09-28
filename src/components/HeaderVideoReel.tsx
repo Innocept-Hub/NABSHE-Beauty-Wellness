@@ -82,7 +82,7 @@ export const HeaderVideoReel: React.FC<HeaderVideoReelProps> = ({
         loop
         playsInline
         webkit-playsinline="true"
-        preload="auto"
+        preload="metadata"
         className="w-full h-full object-cover object-center pointer-events-none"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-[#131315] via-[#131315]/20 to-transparent pointer-events-none" />

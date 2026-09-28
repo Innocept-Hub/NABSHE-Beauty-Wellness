@@ -1,7 +1,7 @@
 // NABSHÉ Beauty & Wellness - High-Performance Service Worker
 // Cache-First for static assets, scripts, fonts & images; Network-First for HTML navigation
 
-const CACHE_NAME = 'nabshe-cache-v3';
+const CACHE_NAME = 'nabshe-cache-v4';
 
 // Core assets to precache during install
 const PRECACHE_ASSETS = [
@@ -12,7 +12,8 @@ const PRECACHE_ASSETS = [
   '/icon-192.png',
   '/icon-512.png',
   '/icon-maskable-512.png',
-  '/nabshe-logo.png'
+  '/nabshe-logo.png',
+  '/nabshe-logo.webp'
 ];
 
 // Install event - precache core shell and activate immediately

@@ -220,6 +220,8 @@ export const ShopScreen: React.FC<ShopScreenProps> = ({
                           alt={product.titleEn}
                           loading="lazy"
                           decoding="async"
+                          width={400}
+                          height={300}
                           className={`w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out ${
                             !product.inStock ? 'opacity-40 grayscale' : ''
                           }`}
