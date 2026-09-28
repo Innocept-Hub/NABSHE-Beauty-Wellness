@@ -21,6 +21,7 @@ import {
 import { Header } from './components/Header';
 import { BottomNav } from './components/BottomNav';
 import { HomeScreen } from './components/HomeScreen';
+import { ScreenSkeleton } from './components/ScreenSkeleton';
 import { useScrollReveal } from './utils/useScrollReveal';
 
 // Code-split secondary screens to remove 150KB+ of unused JavaScript from initial bundle
@@ -323,13 +324,7 @@ export default function App() {
           />
         )}
 
-        <React.Suspense
-          fallback={
-            <div className="flex-1 flex items-center justify-center min-h-[300px]">
-              <div className="w-7 h-7 rounded-full border-2 border-[#f2ca50] border-t-transparent animate-spin" />
-            </div>
-          }
-        >
+        <React.Suspense fallback={<ScreenSkeleton />}>
           {activeScreen === 'services' && (
             <ServicesScreen
               language={language}
@@ -496,23 +491,25 @@ export default function App() {
       </React.Suspense>
     </main>
 
-    {/* Cart Modal Sheet */}
-    <React.Suspense fallback={null}>
-      <CartModal
-        isOpen={isCartModalOpen}
-        onClose={() => setIsCartModalOpen(false)}
-        cart={cart}
-        onUpdateQuantity={handleUpdateCartQuantity}
-        onRemoveItem={handleRemoveFromCart}
-        userProfile={userProfile}
-        language={language}
-        onOrderConfirmed={handleOrderConfirmed}
-        currentScreen={activeScreen}
-        onNavigate={navigateTo}
-        linkedAppointment={linkedAppointment}
-        onUnlinkAppointment={() => setLinkedAppointment(null)}
-      />
-    </React.Suspense>
+    {/* Cart Modal Sheet - Deferred until opened */}
+    {isCartModalOpen && (
+      <React.Suspense fallback={<ScreenSkeleton type="modal" />}>
+        <CartModal
+          isOpen={isCartModalOpen}
+          onClose={() => setIsCartModalOpen(false)}
+          cart={cart}
+          onUpdateQuantity={handleUpdateCartQuantity}
+          onRemoveItem={handleRemoveFromCart}
+          userProfile={userProfile}
+          language={language}
+          onOrderConfirmed={handleOrderConfirmed}
+          currentScreen={activeScreen}
+          onNavigate={navigateTo}
+          linkedAppointment={linkedAppointment}
+          onUnlinkAppointment={() => setLinkedAppointment(null)}
+        />
+      </React.Suspense>
+    )}
 
     {/* Bottom Sticky Navigation Bar - Hidden on dedicated booking, service detail, product detail, package modal & when cart modal or mobile menu is open */}
     {isBottomNavVisible && (

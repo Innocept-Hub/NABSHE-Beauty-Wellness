@@ -18,11 +18,17 @@ export default defineConfig(() => {
       rollupOptions: {
         output: {
           manualChunks(id: string) {
-            if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) {
-              return 'vendor-react';
-            }
-            if (id.includes('node_modules/lucide-react') || id.includes('node_modules/hamburger-react')) {
-              return 'vendor-icons';
+            if (id.includes('node_modules')) {
+              if (id.includes('/react-dom/')) {
+                return 'vendor-react-dom';
+              }
+              if (id.includes('/react/') || id.includes('/scheduler/')) {
+                return 'vendor-react';
+              }
+              if (id.includes('/lucide-react/') || id.includes('/hamburger-react/')) {
+                return 'vendor-icons';
+              }
+              return 'vendor-utils';
             }
           },
         },

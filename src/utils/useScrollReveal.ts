@@ -1,12 +1,15 @@
 import { useEffect } from 'react';
 
 /**
- * High-performance IntersectionObserver hook to trigger smooth, luxury
- * scroll-reveal animations across sections and content cards as the user scrolls.
+ * High-performance, non-blocking scroll-reveal hook.
+ * Uses a generous positive rootMargin (200px) and pure IntersectionObserver
+ * without calling getBoundingClientRect in loops, preventing main-thread layout thrashing.
  */
 export function useScrollReveal(dependencies: unknown[] = []) {
   useEffect(() => {
-    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
+    if (typeof window === 'undefined') return;
+
+    if (!('IntersectionObserver' in window)) {
       document.querySelectorAll('.reveal-on-scroll').forEach((el) => {
         el.classList.add('is-revealed');
       });
@@ -23,27 +26,22 @@ export function useScrollReveal(dependencies: unknown[] = []) {
         });
       },
       {
-        threshold: 0.08,
-        rootMargin: '0px 0px -40px 0px',
+        threshold: 0.01,
+        // Pre-reveal 250px before entering viewport so below-the-fold content is always ready
+        rootMargin: '250px 0px 250px 0px',
       }
     );
 
-    // Short timeout to ensure newly mounted DOM nodes are ready
-    const timer = setTimeout(() => {
+    // Use requestAnimationFrame to avoid interrupting initial paint
+    const rafId = requestAnimationFrame(() => {
       const elements = document.querySelectorAll('.reveal-on-scroll');
       elements.forEach((el) => {
-        const rect = el.getBoundingClientRect();
-        // If element is already in initial view, reveal it immediately
-        if (rect.top < window.innerHeight * 0.9 && rect.bottom > 0) {
-          el.classList.add('is-revealed');
-        } else {
-          observer.observe(el);
-        }
+        observer.observe(el);
       });
-    }, 50);
+    });
 
     return () => {
-      clearTimeout(timer);
+      cancelAnimationFrame(rafId);
       observer.disconnect();
     };
   }, dependencies);
